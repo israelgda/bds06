@@ -1,52 +1,22 @@
-package com.devsuperior.movieflix.entities;
+package com.devsuperior.movieflix.dto;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import com.devsuperior.movieflix.entities.Genre;
+import com.devsuperior.movieflix.entities.Movie;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+public class MovieDTO {
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-@Table(name = "tb_movie")
-public class Movie implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 	private String title;
 	private String subTitle;
 	private Integer year;
 	private String imgUrl;
-	
-	@Column(columnDefinition = "TEXT")
 	private String synopsis;
-	
-	@ManyToOne
-	@JoinColumn(name = "genre_id")
 	private Genre genre;
 	
-	@OneToMany(mappedBy = "movie")
-	@JsonIgnore
-	private List<Review> reviews = new ArrayList<>();
-
-	public Movie() {
-
+	public MovieDTO() {
 	}
 
-	public Movie(Long id, String title, String subTitle, Integer year, String imgUrl, String synopsis, Genre genre) {
-		super();
+	public MovieDTO(Long id, String title, String subTitle, Integer year, String imgUrl, String synopsis, Genre genre) {
 		this.id = id;
 		this.title = title;
 		this.subTitle = subTitle;
@@ -54,6 +24,16 @@ public class Movie implements Serializable {
 		this.imgUrl = imgUrl;
 		this.synopsis = synopsis;
 		this.genre = genre;
+	}
+
+	public MovieDTO(Movie entity) {
+		id = entity.getId();
+		title = entity.getTitle();
+		subTitle = entity.getSubTitle();
+		year = entity.getYear();
+		imgUrl = entity.getImgUrl();
+		synopsis = entity.getSynopsis();
+		genre = entity.getGenre();
 	}
 
 	public Long getId() {
@@ -112,10 +92,6 @@ public class Movie implements Serializable {
 		this.genre = genre;
 	}
 
-	public List<Review> getReviews() {
-		return reviews;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -132,7 +108,7 @@ public class Movie implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Movie other = (Movie) obj;
+		MovieDTO other = (MovieDTO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
